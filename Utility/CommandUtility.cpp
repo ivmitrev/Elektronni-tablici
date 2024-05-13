@@ -1,8 +1,9 @@
 #include "CommandUtility.h"
+#include "Cell/Cell.h"
 
 void CommandUtility::ParseCommand(const std::string& comm)
 {
-    std::vector<std::string> commArgs = splitStringBySpace(comm, ' ');
+    std::vector<std::string> commArgs = splitStringBySpace(comm, " ");
     if(commArgs.empty())
     {
         std::cout << "Command input must not be empty!" << std::endl;
@@ -33,9 +34,17 @@ void CommandUtility::ParseCommand(const std::string& comm)
             else
             {
                 std::string line;
+                
                 while(std::getline(file,line))
                 {
-                    std::cout << line << std::endl;
+                    // std::cout << line << std::endl;
+                    std::vector<std::string> splitby = splitStringBySpace(line,", ");
+                    Cell* cell;
+                    for(auto i : splitby)
+                    {
+                        cell = new Cell(i);
+                                
+                    }
                 }
                 file.close();
                 std::cout << "Successfully opened " << filename << std::endl;
@@ -76,24 +85,26 @@ bool ValidateCommand(const std::string& comm, const std::string arg);
 void ExecuteCommand(const std::string& comm, const std::string arg);
 
     
-std::vector<std::string> CommandUtility::splitStringBySpace(const std::string& input,const char delimiter) 
+std::vector<std::string> CommandUtility::splitStringBySpace(const std::string& input,const std::string& delimiter) 
 {
     std::vector<std::string> splitInput;
     size_t prevIndex = 0;
+    size_t delimiterLength = delimiter.length();
 
     if (input.find_first_not_of(" \t\n\r") == std::string::npos) {
-        return splitInput;
+        return splitInput; 
     }
 
-    for (size_t i = 0; i <= input.size(); i++) {
-        if (i == input.size() || input[i] == delimiter) {
-            std::string substring = input.substr(prevIndex, i - prevIndex);
-            if (!substring.empty()) {
-                splitInput.push_back(substring);
-            }
-            prevIndex = i + 1;
-        }
+    size_t currentIndex = input.find(delimiter, prevIndex);
+    while (currentIndex != std::string::npos) {
+        std::string substring = input.substr(prevIndex, currentIndex - prevIndex);
+        splitInput.push_back(substring);
+        prevIndex = currentIndex + delimiterLength;
+        currentIndex = input.find(delimiter, prevIndex);
     }
+
+    std::string lastSubstring = input.substr(prevIndex);
+    splitInput.push_back(lastSubstring);
 
     return splitInput;
 }

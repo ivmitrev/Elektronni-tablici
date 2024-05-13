@@ -13,5 +13,5 @@ public:
     static void ExecuteCommand(const std::string& comm, const std::string& arg);
 
 private:
-    static std::vector<std::string> splitStringBySpace(const std::string& s, const char delimeter);
+    static std::vector<std::string> splitStringBySpace(const std::string& s, const std::string& delimeter);
 };
