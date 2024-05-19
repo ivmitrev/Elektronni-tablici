@@ -12,7 +12,22 @@ void IntCell::print() const
 
 int IntCell::getCellSize() const
 {
-    return std::to_string(this->cellValue).size();
+    return strlen(std::to_string(this->cellValue).c_str());
 }
 
-    
+void IntCell::print(int cellWidth) const
+{
+    if(cellWidth < 0)
+    {
+        return;
+    }
+
+    if(this->getCellSize() <= cellWidth)
+    {
+        std::cout<<this->cellValue;
+        for(int i=0;i<cellWidth-getCellSize();i++)
+        {
+            std::cout<<' ';
+        }
+    }
+}     

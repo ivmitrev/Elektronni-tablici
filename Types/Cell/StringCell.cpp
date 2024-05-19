@@ -11,5 +11,23 @@ void StringCell::print() const
 
 int StringCell::getCellSize() const
 {
-    return this->cellValue.size();
+    return strlen(this->cellValue.c_str());
 }
+
+
+void StringCell::print(int cellWidth) const
+{
+    if(cellWidth < 0)
+    {
+        return;
+    }
+
+    if(this->getCellSize() <= cellWidth)
+    {
+        std::cout<<this->cellValue;
+        for(int i=0;i<cellWidth-getCellSize();i++)
+        {
+            std::cout<<' ';
+        }
+    }
+} 

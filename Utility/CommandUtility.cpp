@@ -48,7 +48,8 @@ void CommandUtility::ParseCommand(const std::string& comm)
                 
                 table.addRow(row);
             }
-            table.printAll();
+            // !!!
+           table.printAll();
         }
         else if(command == "close")
         {

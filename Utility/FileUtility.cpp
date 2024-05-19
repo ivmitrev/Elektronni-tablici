@@ -29,25 +29,33 @@ std::vector<std::string> FileUtility::splitBy(const std::string &input, const st
 std::vector<std::string> FileUtility::readFromFile(const std::string& filePath)
 {
     std::ifstream file(filePath); 
+    std::string filename = filePath.substr(filePath.find_last_of('\\')+1);
     if(!file.is_open())
     {
-        std::ofstream createFile(filePath);
-        createFile.close();
-
-        file.open(filePath);
-        if(!file.is_open())
+        std::ofstream outputfile(filePath);
+        if(outputfile.is_open())
         {
-            std::cout << "Failed to open the file." << std::endl;
+            std::cout << "Successfully opened " << filename << std::endl;
+            outputfile.close();
+            return {{}};
+
         }
+        else
+        {
+            std::cout << "Failed to open the file" << std::endl;
+            // greshka hvurli
+        }
+
     }
-    std::string line;
-    std::vector<std::string> lines;
-    while(std::getline(file, line))
+    else
     {
-        lines.push_back(line);
+        std::string line;
+        std::vector<std::string> lines;
+        while(std::getline(file, line))
+        {
+            lines.push_back(line);
+        }
+        file.close();
+        return lines;
     }
-    file.close();
-    std::string filename = filePath.substr(filePath.find_last_of('\\')+1);
-    std::cout << "Successfully opened " << filename << std::endl;
-    return lines;
 }

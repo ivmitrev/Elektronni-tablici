@@ -27,37 +27,33 @@ int Table::getMaxRowWidth() const
 
 void Table::printAll() const
 {
-    // for(const Row* row : rows)
-    // {
-    //     row->printAll();
-    //     std::cout << std::endl;
-       
-    // }
+    std::vector<int> colWidths;
+    int currentColMaxWidth = 0;
 
-//     std::vector<int> colWidths;
-//     int currentColMaxWidth = 0;
+    Row* firstRow = rows[0];
+    for(int i=0;i<firstRow->getSize();i++)
+    {
+        for(auto row : rows)
+        {
+            int cellSize = row->getCells()[i]->getCellSize();
+            if(currentColMaxWidth < cellSize)
+            {
+                currentColMaxWidth = cellSize;
+            }
+        }
+        colWidths.push_back(currentColMaxWidth);
+        currentColMaxWidth = 0;
+    }
 
-//     Row* firstRow = rows[0];
-//     for(auto cell : firstRow->getCells())
-//     {
-//         for(auto row : rows)
-//         {
-//             int cellSize = cell->getCellSize();
-//             if(currentColMaxWidth < cellSize)
-//             {
-//                 currentColMaxWidth = cellSize;
-//             }
-//         }
+//todo izkarai v drug metod
+    for(auto row : rows)
+    {
+        for(int i=0;i<row->getCells().size();i++)
+        {
+            row->getCells()[i]->print(colWidths[i]);
+            std::cout << " | ";
+        }
 
-//         colWidths.push_back(currentColMaxWidth);
-//     }
-
-// //todo izkarai v drug metod
-//     for(auto row : rows)
-//     {
-//         for(int i=0;i<row->getCells().size();i++)
-//         {
-//            // row->getCells()[i]->print(colWidths[i]);
-//         }
-//     }
+        std::cout<<std::endl;
+    }
 }

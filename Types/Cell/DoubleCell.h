@@ -5,7 +5,9 @@ class DoubleCell : public Cell
 public:
     DoubleCell(const double cellV);
     void print() const override;
-    int getCellSize() const override;
+    void print(int cellWidth) const override;
+    virtual int getCellSize() const override;
+    std::string doubleToString(double value, int precision) const;
 
 private:
     double cellValue;
