@@ -1,9 +1,17 @@
 #include "CommandUtility.h"
-#include "Cell/Cell.h"
+#include "../Types/Cell/Cell.h"
+#include "../Types/Row/Row.h"
+#include "../Types/Cell/IntCell.h"
+#include "../Types/Cell/DoubleCell.h"
+#include "../Types/Cell/StringCell.h"
+#include "../Types/Table/Table.h"
+#include "CellUtility.h"
+#include "FileUtility.h"
+#include<typeinfo>
 
 void CommandUtility::ParseCommand(const std::string& comm)
 {
-    std::vector<std::string> commArgs = splitStringBySpace(comm, " ");
+    std::vector<std::string> commArgs = FileUtility::splitBy(comm, " ");
     if(commArgs.empty())
     {
         std::cout << "Command input must not be empty!" << std::endl;
@@ -12,48 +20,39 @@ void CommandUtility::ParseCommand(const std::string& comm)
     {  
         const std::string command = commArgs[0];
         if(command == "open")
-        {      
-            std::string filepath = commArgs[1];
-            std::ifstream file(filepath);
-            std::string filename = filepath.substr(filepath.find_last_of('\\')+1);
-            if(!file.is_open())
+        {   
+            std::string filePath = commArgs[1];
+            std::vector<std::string> lines = FileUtility::readFromFile(filePath);
+            Table table;
+            int maxRowWidth = 0;
+            for(const auto& line : lines)
             {
-                std::ofstream outputfile(filepath);
-                if(outputfile.is_open())
+                std::vector<std::string> splitLine = FileUtility::splitBy(line, ", ");
+                if(maxRowWidth < splitLine.size())
                 {
-                    std::cout << "Successfully opened " << filename << std::endl;
-                    outputfile.close();
+                    maxRowWidth = splitLine.size();
                 }
-                else
-                {
-                    std::cout << "Failed to open the file" << std::endl;
-                    return;
-                }
-
             }
-            else
+            for(const auto& line : lines)
             {
-                std::string line;
+                Row* row = new Row();
+                std::vector<std::string> splitLine = FileUtility::splitBy(line, ", ");
+                for(const std::string& cell : splitLine)
+                {
+                    row->addCell(CellUtility::createCellFromInput(cell));
+                }
+                for (int i = 0; i < maxRowWidth-splitLine.size(); i++)
+                {
+                    row->addCell(CellUtility::createCellFromInput(" "));
+                }
                 
-                while(std::getline(file,line))
-                {
-                    // std::cout << line << std::endl;
-                    std::vector<std::string> splitby = splitStringBySpace(line,", ");
-                    Cell* cell;
-                    for(auto i : splitby)
-                    {
-                        cell = new Cell(i);
-                                
-                    }
-                }
-                file.close();
-                std::cout << "Successfully opened " << filename << std::endl;
+                table.addRow(row);
             }
-
+            table.printAll();
         }
         else if(command == "close")
         {
-            
+                
         }
         else if(command == "save")
         {
@@ -85,26 +84,3 @@ bool ValidateCommand(const std::string& comm, const std::string arg);
 void ExecuteCommand(const std::string& comm, const std::string arg);
 
     
-std::vector<std::string> CommandUtility::splitStringBySpace(const std::string& input,const std::string& delimiter) 
-{
-    std::vector<std::string> splitInput;
-    size_t prevIndex = 0;
-    size_t delimiterLength = delimiter.length();
-
-    if (input.find_first_not_of(" \t\n\r") == std::string::npos) {
-        return splitInput; 
-    }
-
-    size_t currentIndex = input.find(delimiter, prevIndex);
-    while (currentIndex != std::string::npos) {
-        std::string substring = input.substr(prevIndex, currentIndex - prevIndex);
-        splitInput.push_back(substring);
-        prevIndex = currentIndex + delimiterLength;
-        currentIndex = input.find(delimiter, prevIndex);
-    }
-
-    std::string lastSubstring = input.substr(prevIndex);
-    splitInput.push_back(lastSubstring);
-
-    return splitInput;
-}

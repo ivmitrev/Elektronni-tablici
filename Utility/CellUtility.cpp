@@ -1,13 +1,10 @@
 #include "CellUtility.h"
+#include "../Types/Cell/IntCell.h"
+#include "../Types/Cell/DoubleCell.h"
+#include "../Types/Cell/StringCell.h"
 
-
-bool CellUtility::isInt(const Cell* other)
-{
-    if(other == nullptr)
-    {
-        return false;
-    }
-    std::string cellValue = other->getValue();
+bool CellUtility::isInt(const std::string& cellValue)
+{     
     if(cellValue.empty())
     {
         return false;
@@ -26,13 +23,8 @@ bool CellUtility::isInt(const Cell* other)
     }
     return true;
 }
-bool CellUtility::isDouble(const Cell* other)
+bool CellUtility::isDouble(const std::string& cellValue)
 {
-    if(other == nullptr)
-    {
-        return false;
-    }
-    std::string cellValue = other->getValue();
     if(cellValue.empty())
     {
         return false;
@@ -73,19 +65,39 @@ bool CellUtility::isDouble(const Cell* other)
     }
     return digitsSeenBeforeDot && dotSeen;
 }
-bool CellUtility::isString(const Cell* other)
+bool CellUtility::isString(const std::string& cellValue)
 {
     // dali raboti ili samo bog znae !
      
-    if(other->getLength() != 0 && other->getValue()[0] == '\"' && other->getValue()[other->getLength()-1] == '\"')
+    if(cellValue.size() != 0 && cellValue[0] == '\"' && cellValue[cellValue.size()-1]== '\"')
     {
         return true;
     }
     return false;
 }
-bool CellUtility::isFormula(const Cell* other)
+bool CellUtility::isFormula(const std::string& other)
 {
     return false;
 }
 
+Cell* CellUtility::createCellFromInput(const std::string& value)
+{
+    if(CellUtility::isInt(value))
+    {
+        return new IntCell(std::stoi(value));
+    }
+    else if(CellUtility::isDouble(value))
+    {
+        return new DoubleCell(std::stod(value));
+    }
+    else if(CellUtility::isString(value))
+    {
+        return new StringCell(value);
+    }
+    else if(CellUtility::isFormula(value))
+    {
+        return nullptr;
+    }
+    else return new StringCell(" ");
+}
     

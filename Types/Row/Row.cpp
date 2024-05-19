@@ -1,41 +1,68 @@
-#include "Row.h"
-    
-Row::Row() 
+#include "Row.h" 
+
+Row::~Row() 
 {
+    for(Cell* cell : cells)
+    {
+        delete cell;
+    }
+}
+
+void Row::addCell(Cell* cell)
+{
+    cells.push_back(cell);
+}
+
+void Row::print(int index) const
+{
+    if(index < 0 || index >= cells.size())
+    {
+        // greshka hvurlqm
+        return;
+    }
+    cells[index]->print();
+}
+
+
+void Row::printAll() const
+{
+    //std::cout << "Print all " << cells.size() << " cells\n";
+    for(auto cell : cells)
+    {
+        cell->print();
+        // std::cout << " | " ;
+    } 
 
 }
 
-Row::Row(const std::vector<Cell*> rowofcells)
+int Row::getSize() const
 {
-    this->rowofcells = rowofcells;
-}
-Row::Row(const Row& other)
-{
-//    for(auto* cell : other.rowofcells)
-//    {
-//     rowofcells.push_back(new Ce)
-//    }
-}
-Row& Row::operator=(const Row& other)
-{
-
-}
-Row::~Row()
-{
-
-}
-    
-void Row::setCell(const std::string cellV,int col)
-{
-    // rowofcells[col] = cellV;
+    return cells.size();
 }
 
-Cell* Row::createCell(const std::string cellValue) const
+std::vector<Cell*> Row::getCells() const
 {
-
+    return this->cells;
 }
 
-Cell* Row::getCell(int col) const
-{
-    return nullptr;
-}
+
+// Row::Row(const std::vector<Cell*> rowofcells)
+// {
+//     this->rowofcells = rowofcells;
+// }
+// Row::Row(const Row& other)
+// {
+// //    for(auto* cell : other.rowofcells)
+// //    {
+// //     rowofcells.push_back(new Ce)
+// //    }
+// }
+// Row& Row::operator=(const Row& other)
+// {
+
+// }
+
+
+
+
+

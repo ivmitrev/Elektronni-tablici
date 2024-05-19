@@ -1,13 +1,18 @@
 #include "IntCell.h"
 
-IntCell::IntCell(const std::string& cellV) : Cell(cellV)
+
+IntCell::IntCell(const int cellV)
 {
-    this->cellValue = std::stoi(cellV);
+    this->cellValue = cellV;
 }
-int IntCell::getValue() const
+void IntCell::print() const
 {
-    return this->cellValue;
+    std::cout << cellValue;
 }
 
-   
+int IntCell::getCellSize() const
+{
+    return std::to_string(this->cellValue).size();
+}
+
     

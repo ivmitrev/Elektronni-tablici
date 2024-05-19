@@ -3,8 +3,9 @@
 class IntCell : public Cell 
 {
 public:
-    IntCell(const std::string& cellV);
-    virtual int getValue() const;
+    IntCell(const int cellV);
+    void print() const override;
+    int getCellSize() const override;
 private:
     int cellValue;
 

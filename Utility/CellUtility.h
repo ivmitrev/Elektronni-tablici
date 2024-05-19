@@ -1,12 +1,12 @@
 #pragma once
-#include "Cell/Cell.h"
+#include "../Types/Cell/Cell.h"
 class CellUtility
 {
 public:
-    bool isInt(const Cell* other);
-    bool isDouble(const Cell* other);
-    bool isString(const Cell* other);
-    bool isFormula(const Cell* other);
-private:
-    
+    static bool isInt(const std::string& cellValue);
+    static bool isDouble(const std::string& cellValue);
+    static bool isString(const std::string& cellValue);
+    static bool isFormula(const std::string& cellValue);
+    static Cell* createCellFromInput(const std::string& value);
+private:  
 };

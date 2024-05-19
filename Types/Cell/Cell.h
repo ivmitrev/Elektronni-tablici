@@ -4,11 +4,8 @@
 class Cell 
 {
 public:
-    Cell(const std::string& value);
-    virtual ~Cell();
-    virtual int getLength() const;
-    virtual std::string getValue() const;
-    virtual void setValue(const std::string newValue);
-protected:
-    std::string cellValue;
+   virtual void print() const = 0;
+  // virtual void print(int cellWidth) const = 0;
+   virtual ~Cell() = default;
+   virtual int getCellSize() const = 0;
 };

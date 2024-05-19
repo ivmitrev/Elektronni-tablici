@@ -1,13 +1,15 @@
 #include "StringCell.h"
 
-StringCell::StringCell(const std::string& cellV) : Cell(cellV)
+StringCell::StringCell(const std::string& cellV)
 {
     this->cellValue = cellV;
 }
-std::string StringCell::getValue() const
+void StringCell::print() const
 {
-    return this->cellValue;
+    std::cout << cellValue;
 }
 
-   
-    
+int StringCell::getCellSize() const
+{
+    return this->cellValue.size();
+}
