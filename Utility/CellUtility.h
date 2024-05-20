@@ -1,5 +1,6 @@
 #pragma once
 #include "../Types/Cell/Cell.h"
+#include<regex>
 class CellUtility
 {
 public:

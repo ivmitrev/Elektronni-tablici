@@ -37,6 +37,7 @@ void CommandUtility::ParseCommand(const std::string& comm)
             {
                 Row* row = new Row();
                 std::vector<std::string> splitLine = FileUtility::splitBy(line, ", ");
+                //std::cout << splitLine[2] << std::endl;
                 for(const std::string& cell : splitLine)
                 {
                     row->addCell(CellUtility::createCellFromInput(cell));

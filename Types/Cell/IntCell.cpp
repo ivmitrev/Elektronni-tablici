@@ -4,15 +4,29 @@
 IntCell::IntCell(const int cellV)
 {
     this->cellValue = cellV;
+    this->flagPlus = false;
+}
+IntCell::IntCell(const int cellV, bool flagPlus)
+{
+    this->cellValue = cellV;
+    this->flagPlus= flagPlus;
 }
 void IntCell::print() const
-{
+{        
     std::cout << cellValue;
 }
 
 int IntCell::getCellSize() const
 {
-    return strlen(std::to_string(this->cellValue).c_str());
+    if(this->flagPlus)
+    {
+        return strlen(std::to_string(this->cellValue).c_str())+1;
+    }
+    else
+    {
+        return strlen(std::to_string(this->cellValue).c_str());
+    }
+    
 }
 
 void IntCell::print(int cellWidth) const
@@ -24,7 +38,14 @@ void IntCell::print(int cellWidth) const
 
     if(this->getCellSize() <= cellWidth)
     {
-        std::cout<<this->cellValue;
+        if(flagPlus)
+        {
+            std::cout<<"+"<<this->cellValue;
+        }
+        else
+        {
+            std::cout<<this->cellValue;
+        }     
         for(int i=0;i<cellWidth-getCellSize();i++)
         {
             std::cout<<' ';

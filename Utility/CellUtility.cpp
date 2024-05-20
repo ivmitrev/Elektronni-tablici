@@ -10,7 +10,7 @@ bool CellUtility::isInt(const std::string& cellValue)
         return false;
     }
     std::size_t i = 0;
-    if(cellValue[0] == '+' || cellValue[1] == '-')
+    if(cellValue[0] == '+' || cellValue[0] == '-')
     {
         ++i;
     }
@@ -67,28 +67,64 @@ bool CellUtility::isDouble(const std::string& cellValue)
 }
 bool CellUtility::isString(const std::string& cellValue)
 {
-    // dali raboti ili samo bog znae !
-     
-    if(cellValue.size() != 0 && cellValue[0] == '\"' && cellValue[cellValue.size()-1]== '\"')
+    if(cellValue.size() < 2 || cellValue.front() != '"' || cellValue.back() != '"')
     {
-        return true;
+        return false;
     }
-    return false;
+
+    for(int i = 1; i < cellValue.size()-1;i++)
+    {
+        if(cellValue[i] == '"' || cellValue[i] == '\\')
+        {
+            if(cellValue[i-1] != '\\')
+            {
+                return false;
+            }
+        }
+
+        if(cellValue[i] == '\\')
+        {
+            if(i+1 >= cellValue.size() - 1 || (cellValue[i+1] != '"' && cellValue[i+1] != '\\'))
+            {
+                return false;
+            }
+            ++i;
+        }
+    }
+    return true;
 }
-bool CellUtility::isFormula(const std::string& other)
+bool CellUtility::isFormula(const std::string& cellValue)
 {
-    return false;
+    std::string pattern = R"("^=\sR[1-9][0-9]*C[1-9][0-9]*\s[\*\^\/\+\-]\sR[1-9][0-9]*C[1-9][0-9]*$")";
+    std::regex regex(pattern);    
+     
+       
+  
 }
 
 Cell* CellUtility::createCellFromInput(const std::string& value)
 {
     if(CellUtility::isInt(value))
-    {
-        return new IntCell(std::stoi(value));
+    {   
+        if(value[0] == '+')
+        {
+            return new IntCell(std::stoi(value), true);
+        }
+        else
+        {
+            return new IntCell(std::stoi(value));
+        }  
     }
     else if(CellUtility::isDouble(value))
     {
-        return new DoubleCell(std::stod(value));
+        if(value[0] == '+')
+        {
+            return new DoubleCell(std::stod(value),true);
+        }
+        else
+        {
+            return new DoubleCell(std::stod(value));
+        }
     }
     else if(CellUtility::isString(value))
     {

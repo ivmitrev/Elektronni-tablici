@@ -3,6 +3,12 @@
 DoubleCell::DoubleCell(const double cellV)
 {
     this->cellValue = cellV;
+    this->flagPlus = false;
+}
+DoubleCell::DoubleCell(const double cellV,bool flagPlus)
+{
+    this->cellValue = cellV;
+    this->flagPlus = flagPlus;
 }
 void DoubleCell::print() const
 {
@@ -26,7 +32,14 @@ std::string DoubleCell::doubleToString(double value, int precision)  const
 
 int DoubleCell::getCellSize() const
 {
-    return doubleToString(this->cellValue, 3).size();
+    if(this->flagPlus)
+    {
+        return doubleToString(this->cellValue, 3).size()+1;
+    }
+    else
+    {
+        return doubleToString(this->cellValue, 3).size();
+    }
 }
  
 void DoubleCell::print(int cellWidth) const
@@ -38,7 +51,15 @@ void DoubleCell::print(int cellWidth) const
 
     if(this->getCellSize() <= cellWidth)
     {
-        std::cout<<doubleToString(this->cellValue, 3);
+        if(flagPlus)
+        {
+            std::cout<<"+"<<doubleToString(this->cellValue, 3);
+        }
+        else
+        {
+            std::cout<<doubleToString(this->cellValue, 3);
+        }    
+        
         for(int i=0;i<cellWidth-getCellSize();i++)
         {
             std::cout<<' ';
