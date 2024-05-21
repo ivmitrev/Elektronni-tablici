@@ -1,4 +1,5 @@
-10, "Hello world!", 123.56
-20,   , 1000
-  ,   ,     ,
-  , 10   ,
+"hello"
+"\"he\\ll\\o"
+"C:\\temp\\"
+"\"This is add\\dddd\"dddddd\"tation\""
+"Open M\\ARTI VE"

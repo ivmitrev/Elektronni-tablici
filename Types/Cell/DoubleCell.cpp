@@ -23,7 +23,8 @@ std::string DoubleCell::doubleToString(double value, int precision)  const
 
     str.erase(str.find_last_not_of('0') + 1, std::string::npos);
    
-    if (str.back() == '.') {
+    if (str.back() == '.') 
+    {
         str.pop_back();
     }
 

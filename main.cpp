@@ -9,6 +9,7 @@
 #include "Types/Cell/IntCell.cpp"
 #include "Types/Cell/DoubleCell.cpp"
 #include "Types/Cell/StringCell.cpp"
+#include "Types/Cell/FormulaCell.cpp"
 
 
 int main()
@@ -20,6 +21,6 @@ int main()
         std::getline(std::cin,command);
         CommandUtility::ParseCommand(command); 
     }
-
+    // std:: string str ="he\llo";
     return 0;
 }

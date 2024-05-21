@@ -7,10 +7,10 @@
 #include "../Types/Table/Table.h"
 #include "CellUtility.h"
 #include "FileUtility.h"
-#include<typeinfo>
+// #include <typeinfo>
 
 void CommandUtility::ParseCommand(const std::string& comm)
-{
+{   
     std::vector<std::string> commArgs = FileUtility::splitBy(comm, " ");
     if(commArgs.empty())
     {
@@ -37,10 +37,11 @@ void CommandUtility::ParseCommand(const std::string& comm)
             {
                 Row* row = new Row();
                 std::vector<std::string> splitLine = FileUtility::splitBy(line, ", ");
-                //std::cout << splitLine[2] << std::endl;
                 for(const std::string& cell : splitLine)
                 {
-                    row->addCell(CellUtility::createCellFromInput(cell));
+                    std::string trimmedCell = FileUtility::trim(cell); 
+                    std::cout << trimmedCell << std::endl;
+                    row->addCell(CellUtility::createCellFromInput(trimmedCell));
                 }
                 for (int i = 0; i < maxRowWidth-splitLine.size(); i++)
                 {
@@ -54,7 +55,7 @@ void CommandUtility::ParseCommand(const std::string& comm)
         }
         else if(command == "close")
         {
-                
+            
         }
         else if(command == "save")
         {
@@ -84,5 +85,3 @@ exit			exists the program
 }
 bool ValidateCommand(const std::string& comm, const std::string arg);
 void ExecuteCommand(const std::string& comm, const std::string arg);
-
-    

@@ -2,6 +2,7 @@
 #include "../Types/Cell/IntCell.h"
 #include "../Types/Cell/DoubleCell.h"
 #include "../Types/Cell/StringCell.h"
+#include "../Types/Cell/FormulaCell.h"
 
 bool CellUtility::isInt(const std::string& cellValue)
 {     
@@ -67,39 +68,43 @@ bool CellUtility::isDouble(const std::string& cellValue)
 }
 bool CellUtility::isString(const std::string& cellValue)
 {
-    if(cellValue.size() < 2 || cellValue.front() != '"' || cellValue.back() != '"')
+    if (cellValue.size() < 2 || cellValue.front() != '"' || cellValue.back() != '"') 
     {
         return false;
     }
 
-    for(int i = 1; i < cellValue.size()-1;i++)
+    for (size_t i = 1; i < cellValue.size() - 1; ++i) 
     {
-        if(cellValue[i] == '"' || cellValue[i] == '\\')
+        if (cellValue[i] == '"') 
         {
-            if(cellValue[i-1] != '\\')
+            if (cellValue[i - 1] != '\\') 
             {
                 return false;
             }
         }
-
-        if(cellValue[i] == '\\')
+        else if (cellValue[i] == '\\') 
         {
-            if(i+1 >= cellValue.size() - 1 || (cellValue[i+1] != '"' && cellValue[i+1] != '\\'))
+            
+            if (i + 1 >= cellValue.size() - 1 || (cellValue[i + 1] != '"' && cellValue[i + 1] != '\\')) 
             {
                 return false;
             }
-            ++i;
+            ++i; 
         }
     }
     return true;
 }
 bool CellUtility::isFormula(const std::string& cellValue)
 {
-    std::string pattern = R"("^=\sR[1-9][0-9]*C[1-9][0-9]*\s[\*\^\/\+\-]\sR[1-9][0-9]*C[1-9][0-9]*$")";
-    std::regex regex(pattern);    
-     
-       
-  
+    std::string patternRc = R"(^=\sR[1-9][0-9]*C[1-9][0-9]*\s[\*\^\/\+\-]\sR[1-9][0-9]*C[1-9][0-9]*$)";
+    std::string patternNumbers = R"(^=\s[+-]?\d+(\.\d+)?\s[\*\^\+\-\/]\s[+-]?\d+(\.\d+)?$)";
+    std::regex regexRc(patternRc);    
+    std::regex regexNumbers(patternNumbers);
+    if(!std::regex_match(cellValue, regexRc) && !std::regex_match(cellValue, regexNumbers))
+    {
+        return false;
+    }
+    return true;
 }
 
 Cell* CellUtility::createCellFromInput(const std::string& value)
@@ -132,7 +137,7 @@ Cell* CellUtility::createCellFromInput(const std::string& value)
     }
     else if(CellUtility::isFormula(value))
     {
-        return nullptr;
+        return new FormulaCell(value);
     }
     else return new StringCell(" ");
 }

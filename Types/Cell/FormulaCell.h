@@ -1,14 +1,14 @@
 #pragma once
 #include "Cell.h"
-class StringCell : public Cell 
+class FormulaCell : public Cell 
 {
 public:
-    StringCell(const std::string& cellV);
+    FormulaCell(const std::string& cellV);
     void print() const override;
     void print(int cellWidth) const override;
     int getCellSize() const override;
-    std::string returnCellValueFormatted(const std::string& cellV) const;
-  
+    void setCellValueAnswer(const std::string& cellV);
 private:
     std::string cellValue;
+    std::string cellValueAnswer;
 };
