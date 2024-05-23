@@ -52,3 +52,8 @@ void IntCell::print(int cellWidth) const
         }
     }
 }     
+
+std::string IntCell::getValueCellString() const
+{
+    return std::to_string(this->cellValue);
+}

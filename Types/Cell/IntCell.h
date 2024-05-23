@@ -8,6 +8,7 @@ public:
     void print() const override;
     void print(int cellWidth) const override;
     int getCellSize() const override;
+    std::string getValueCellString() const override;
 private:
     int cellValue;
     bool flagPlus;

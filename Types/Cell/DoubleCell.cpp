@@ -14,7 +14,6 @@ void DoubleCell::print() const
 {
     std::cout << doubleToString(this->cellValue, 3);
 }
-
 std::string DoubleCell::doubleToString(double value, int precision)  const
 {
     std::ostringstream oss;
@@ -67,5 +66,7 @@ void DoubleCell::print(int cellWidth) const
         }
     }
 } 
-   
-    
+ std::string DoubleCell::getValueCellString() const 
+ {
+    return std::to_string(this->cellValue);
+ }

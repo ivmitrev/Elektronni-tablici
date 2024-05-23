@@ -40,7 +40,6 @@ void CommandUtility::ParseCommand(const std::string& comm)
                 for(const std::string& cell : splitLine)
                 {
                     std::string trimmedCell = FileUtility::trim(cell); 
-                    std::cout << trimmedCell << std::endl;
                     row->addCell(CellUtility::createCellFromInput(trimmedCell));
                 }
                 for (int i = 0; i < maxRowWidth-splitLine.size(); i++)
@@ -51,6 +50,7 @@ void CommandUtility::ParseCommand(const std::string& comm)
                 table.addRow(row);
             }
             // !!!
+           table.calculatingFormulas();
            table.printAll();
         }
         else if(command == "close")

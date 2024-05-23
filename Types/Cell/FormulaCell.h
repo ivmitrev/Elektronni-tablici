@@ -7,7 +7,9 @@ public:
     void print() const override;
     void print(int cellWidth) const override;
     int getCellSize() const override;
-    void setCellValueAnswer(const std::string& cellV);
+    void setValueCellAnswerString(std::string value);
+    std::string getValueCellString() const override final;
+    std::string doubleToString(double value, int precision)  const;
 private:
     std::string cellValue;
     std::string cellValueAnswer;

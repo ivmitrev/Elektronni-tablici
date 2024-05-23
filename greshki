@@ -1,5 +1,11 @@
 2) nevalidni simvoli
-4) validaciq na string i formuli kletki
 
 
 da se napravi validaciq na vhod danni s ErrorCell
+
+
+pow ne pravi dobre v s drobi
+
+
+regex da se opravi isFormula
+zashtoto ne pravi R1C1 * 2

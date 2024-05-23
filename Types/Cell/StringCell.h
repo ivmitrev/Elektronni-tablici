@@ -8,6 +8,7 @@ public:
     void print(int cellWidth) const override;
     int getCellSize() const override;
     std::string returnCellValueFormatted(const std::string& cellV) const;
+    std::string getValueCellString() const override;
   
 private:
     std::string cellValue;
