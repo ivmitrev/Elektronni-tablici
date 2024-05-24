@@ -66,7 +66,7 @@ void DoubleCell::print(int cellWidth) const
         }
     }
 } 
- std::string DoubleCell::getValueCellString() const 
- {
+std::string DoubleCell::getValueCellString() const 
+{
     return std::to_string(this->cellValue);
- }
+}

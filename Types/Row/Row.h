@@ -16,6 +16,7 @@ public:
     void printAll() const;
     int getSize() const;
     std::vector<Cell*> getCells() const;
+    void editCell(size_t colIndex, const std::string& value);
 
     // Row(const std::vector<Cell*> rowofcells);
     // Row(const Row& other);

@@ -40,11 +40,12 @@ void IntCell::print(int cellWidth) const
     {
         if(flagPlus)
         {
-            std::cout<<"+"<<this->cellValue;
+            std::cout<<"+";
+            print();
         }
         else
         {
-            std::cout<<this->cellValue;
+            print();
         }     
         for(int i=0;i<cellWidth-getCellSize();i++)
         {
@@ -55,5 +56,5 @@ void IntCell::print(int cellWidth) const
 
 std::string IntCell::getValueCellString() const
 {
-    return std::to_string(this->cellValue);
+    return std::to_string(this->cellValue).c_str();
 }

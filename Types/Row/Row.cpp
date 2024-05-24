@@ -1,4 +1,5 @@
 #include "Row.h" 
+#include "../../Utility/CellUtility.h"
 
 Row::~Row() 
 {
@@ -62,7 +63,22 @@ std::vector<Cell*> Row::getCells() const
 
 // }
 
+void Row::editCell(size_t colIndex, const std::string& value) 
+{
+    if (colIndex >= this->getCells().size() || colIndex < 0) 
+    {
+        std::cerr << "Error: Index out of range\n";
+        return;
+    }
+    
+    auto newCell = CellUtility::createCellFromInput(value);
+    if(newCell->getValueCellString() == " ") 
+    {
+        std::cerr<<"Invalid value\n";
+        delete newCell;
+        return;
+    }
 
-
-
-
+    delete cells[colIndex];
+    cells[colIndex] = newCell;
+}

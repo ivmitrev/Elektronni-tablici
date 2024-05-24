@@ -96,7 +96,7 @@ bool CellUtility::isString(const std::string& cellValue)
 }
 bool CellUtility::isFormula(const std::string& cellValue)
 {
-    std::string patternRc = R"(^=\sR[1-9][0-9]*C[1-9][0-9]*\s[\*\^\/\+\-]\sR[1-9][0-9]*C[1-9][0-9]*$)";
+    std::string patternRc = R"(^=\s((R[1-9][0-9]*C[1-9][0-9]*)|([+-]?\d+(\.\d+)?))\s[\*\^\/\+\-]\s((R[1-9][0-9]*C[1-9][0-9]*)|([+-]?\d+(\.\d+)?))$)";
     std::string patternNumbers = R"(^=\s[+-]?\d+(\.\d+)?\s[\*\^\+\-\/]\s[+-]?\d+(\.\d+)?$)";
     std::regex regexRc(patternRc);    
     std::regex regexNumbers(patternNumbers);

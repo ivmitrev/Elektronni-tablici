@@ -10,6 +10,7 @@ public:
     void setValueCellAnswerString(std::string value);
     std::string getValueCellString() const override final;
     std::string doubleToString(double value, int precision)  const;
+    std::string getValueCellAnswerString() const;
 private:
     std::string cellValue;
     std::string cellValueAnswer;

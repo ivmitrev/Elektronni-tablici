@@ -51,7 +51,15 @@ void CommandUtility::ParseCommand(const std::string& comm)
             }
             // !!!
            table.calculatingFormulas();
+           table.edit(2,3,"33.33.33");  
            table.printAll();
+           std::string commandForEdit;
+        //    std::getline(std::cin,commandForEdit);
+        //    std::vector<std::string> vectorForEdit = FileUtility::splitBy(commandForEdit, " ");
+        //    std::string commandForEditArgsRow = vectorForEdit[1];
+        //    std::string commandForEditArgsCol = vectorForEdit[2];
+        //    std::string commandForEditArgsNewValueData = vectorForEdit[3];
+          
         }
         else if(command == "close")
         {

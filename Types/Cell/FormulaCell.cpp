@@ -32,6 +32,11 @@ std::string FormulaCell::getValueCellString() const
 {
     return this->cellValue;
 }
+std::string FormulaCell::getValueCellAnswerString() const
+{
+    // std::cout << "tuk :"<< this->cellValueAnswer << std::endl; 
+    return this->cellValueAnswer;
+}
 void FormulaCell::setValueCellAnswerString(std::string value) 
 {
     this->cellValueAnswer = value;

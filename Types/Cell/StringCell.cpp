@@ -61,4 +61,5 @@ void StringCell::print(int cellWidth) const
 std::string StringCell::getValueCellString() const
 {
     return this->cellValue;
+    
 }

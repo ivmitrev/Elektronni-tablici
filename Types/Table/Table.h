@@ -6,15 +6,17 @@ class Table
 public:
     Table() = default;
     ~Table();
-
     void addRow(Row* row);
     void printAll() const;
-    int getMaxRowWidth() const;
     void calculatingFormulas() const;
+    void edit(const int& rowIndex,const int& colIndex, const std::string& newCellValue);
     
 private:
     std::vector<Row*> rows;
     std::string getValueFromRowColumn(const int row, const int column) const;
     bool isValidNumber(const std::string& str) const;
     double pow(const double& num, const int& exp) const;
+    void calculatingFormulasOnlyRc() const;
+    void calculatingFormulasNotRc() const;
+    int getMaxRowWidth() const;
 };
