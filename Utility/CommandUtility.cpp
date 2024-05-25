@@ -9,9 +9,12 @@
 #include "FileUtility.h"
 // #include <typeinfo>
 
-void CommandUtility::ParseCommand(const std::string& comm)
+std::string filePath = "";
+
+Table* CommandUtility::ParseCommand(const std::string& comm, Table* table)
 {   
     std::vector<std::string> commArgs = FileUtility::splitBy(comm, " ");
+
     if(commArgs.empty())
     {
         std::cout << "Command input must not be empty!" << std::endl;
@@ -19,11 +22,11 @@ void CommandUtility::ParseCommand(const std::string& comm)
     else
     {  
         const std::string command = commArgs[0];
-        if(command == "open")
+        if(command == "open" && commArgs.size() == 2)
         {   
-            std::string filePath = commArgs[1];
+            table = new Table();
+            filePath = commArgs[1];
             std::vector<std::string> lines = FileUtility::readFromFile(filePath);
-            Table table;
             int maxRowWidth = 0;
             for(const auto& line : lines)
             {
@@ -47,33 +50,53 @@ void CommandUtility::ParseCommand(const std::string& comm)
                     row->addCell(CellUtility::createCellFromInput(" "));
                 }
                 
-                table.addRow(row);
+                table->addRow(row);
+            }  
+            return table;
+        }
+        else if(command == "close" && commArgs.size() == 1)
+        {
+            if(!filePath.empty())
+            {
+                delete table;
+                std::cout << "Successfully closed " << filePath << std::endl;
+                filePath="";
             }
-            // !!!
-           table.calculatingFormulas();
-           table.edit(2,3,"33.33.33");  
-           table.printAll();
-           std::string commandForEdit;
-        //    std::getline(std::cin,commandForEdit);
-        //    std::vector<std::string> vectorForEdit = FileUtility::splitBy(commandForEdit, " ");
-        //    std::string commandForEditArgsRow = vectorForEdit[1];
-        //    std::string commandForEditArgsCol = vectorForEdit[2];
-        //    std::string commandForEditArgsNewValueData = vectorForEdit[3];
-          
+            else
+            {
+                std::cerr << "Should open file first" << std::endl;
+            }
         }
-        else if(command == "close")
+        else if(command == "save" && commArgs.size() == 1)
         {
-            
-        }
-        else if(command == "save")
-        {
+            if(!filePath.empty())
+            {
+                if(FileUtility::saveFile(table,filePath))
+                {
+                    std::cout << "Successfully saved " << filePath << std::endl;
+                }
+            }
+            else
+            {
+                std::cerr << "Should open file first" << std::endl;
+            }
 
         }
-        else if(command == "saveas")
+        else if(command == "saveas" && commArgs.size() == 2)
         {
-
+            if(!filePath.empty())
+            {
+               if(FileUtility::saveAsFile(table,commArgs[1]))
+               {
+                    std::cout << "Successfully saved " << commArgs[1] << " " << filePath << std::endl;
+               }
+            }
+            else
+            {   
+                std::cerr << "Should open file first" << std::endl;
+            }
         }
-        else if(command == "help")
+        else if(command == "help" && commArgs.size() == 1)
         {
             std::cout << R"(The following commands are supported:
 open <file>	opens <file>
@@ -85,9 +108,51 @@ exit			exists the program
                 )"<< std::endl;
             
         }
-        else if(command == "exit")
+        else if(command == "exit" && commArgs.size() == 1)
         {
+            delete table;
             exit(0);
+        }
+        else if(command == "print" && commArgs.size() == 1)
+        {
+            if(!filePath.empty())
+            {
+                table->calculatingFormulas();
+                table->printAll();
+            }
+            else
+            {
+                std::cerr << "Should open file first" << std::endl;
+            }
+            
+        }
+        else if(command == "edit" && commArgs.size() == 4)
+        {
+            if(!filePath.empty())
+            {
+                try
+                {
+                    // stoi ako e drobno zakruglqva
+                    table->edit(std::stoi(commArgs[1]),std::stoi(commArgs[2]),commArgs[3]);
+                }
+                catch(const std::invalid_argument& e)
+                {
+                    std::cerr << "Invalid argument in row or column" << std::endl;
+                }
+                catch(const std::out_of_range& e)
+                {
+                    std::cerr << "Invalid argument in row or column" << std::endl;
+                }
+            }
+            else
+            {
+                std::cerr << "Should open file first" << std::endl;
+            }
+           
+        }
+        else
+        {
+            std::cerr << "Invalid command arguments" << std::endl;
         }
     }
 }

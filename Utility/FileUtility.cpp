@@ -83,3 +83,44 @@ std::vector<std::string> FileUtility::readFromFile(const std::string& filePath)
         return lines;
     }
 }
+
+bool FileUtility::saveFile(const Table* table,const std::string& filePath)
+{
+    std::ofstream outputFile(filePath, std::ios::trunc);
+    if(!outputFile.is_open())
+    {
+        std::cerr << "Failed to open the file" << std::endl;
+        return false;
+    }
+
+    for(auto row : table->getRows())
+    {
+       int index = 0;
+       for(auto cell : row->getCells())
+       {
+            outputFile << cell->getValueCellString();
+            if(index != row->getCells().size()-1)
+            {
+                outputFile << ", ";
+            }
+            index+=1;
+       }
+       outputFile << std::endl;
+    }
+    outputFile.close();
+    return true;
+}
+
+
+bool FileUtility::saveAsFile(const Table* table, const std::string& newFilePath)
+{
+    std::ifstream file(newFilePath);
+    if(file.good())
+    {
+        std::cerr << newFilePath << " already exists" << std::endl;
+        return false; 
+    }
+    file.close();
+    saveFile(table,newFilePath);
+    return true;
+}

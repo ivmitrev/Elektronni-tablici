@@ -14,12 +14,17 @@
 
 int main()
 {
+    Table* table;
     while (true)
     { 
         std::cout << "Write a command!" << std::endl;
         std::string command;
         std::getline(std::cin,command);
-        CommandUtility::ParseCommand(command); 
+        Table* newTable = CommandUtility::ParseCommand(command, table); 
+        if(newTable != nullptr)
+        {
+            table = newTable;
+        }
     }
 
     return 0;

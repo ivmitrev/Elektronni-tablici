@@ -56,5 +56,9 @@ void IntCell::print(int cellWidth) const
 
 std::string IntCell::getValueCellString() const
 {
+    if(flagPlus)
+    {
+        return "+" + std::to_string(this->cellValue);
+    }
     return std::to_string(this->cellValue).c_str();
 }

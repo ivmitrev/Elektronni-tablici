@@ -70,8 +70,8 @@ void Row::editCell(size_t colIndex, const std::string& value)
         std::cerr << "Error: Index out of range\n";
         return;
     }
-    
     auto newCell = CellUtility::createCellFromInput(value);
+    // da se opravi
     if(newCell->getValueCellString() == " ") 
     {
         std::cerr<<"Invalid value\n";

@@ -67,6 +67,10 @@ void DoubleCell::print(int cellWidth) const
     }
 } 
 std::string DoubleCell::getValueCellString() const 
-{
-    return std::to_string(this->cellValue);
+{   
+    if(flagPlus)
+    {
+        return "+" + doubleToString(this->cellValue, 3);
+    }
+    return doubleToString(this->cellValue, 3);
 }

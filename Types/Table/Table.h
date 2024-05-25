@@ -10,6 +10,7 @@ public:
     void printAll() const;
     void calculatingFormulas() const;
     void edit(const int& rowIndex,const int& colIndex, const std::string& newCellValue);
+    std::vector<Row*> getRows() const;
     
 private:
     std::vector<Row*> rows;

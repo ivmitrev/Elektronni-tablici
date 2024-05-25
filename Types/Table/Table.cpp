@@ -12,6 +12,10 @@ void Table::addRow(Row* row)
 {
     rows.push_back(row);
 }
+std::vector<Row*> Table::getRows() const
+{
+    return rows;
+}
 std::string Table::getValueFromRowColumn(const int rowIndex,const int colIndex) const
 {   
     int rowIndexinFor=1,colIndexinFor=1;
@@ -267,16 +271,15 @@ void Table::printAll() const
 void Table::edit(const int& rowIndex,const int& colIndex, const std::string& newCellValue)
 {
     int correctedRowIndex = rowIndex - 1;
-    int correctedColIndex = colIndex-1;
+    int correctedColIndex = colIndex - 1;
     
     if (correctedRowIndex >= rows.size() || correctedRowIndex < 0) 
     {
         std::cerr << "Error: Index out of range\n";
         return;
     }
-    
     rows[correctedRowIndex]->editCell(correctedColIndex, newCellValue);
-    std::cout<<"Edited\n";
+    std::cout<<"Edited" << std::endl;
 }
 
 bool Table::isValidNumber(const std::string& str) const
