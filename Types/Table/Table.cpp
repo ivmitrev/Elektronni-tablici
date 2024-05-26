@@ -239,13 +239,12 @@ void Table::printAll() const
 {
     std::vector<int> colWidths;
     int currentColMaxWidth = 0;
-
     Row* firstRow = rows[0];
     for(int i=0;i<firstRow->getSize();i++)
     {
         for(auto row : rows)
         {
-            int cellSize = row->getCells()[i]->getCellSize();
+            int cellSize = row->getCells()[i]->getCellSize();   
             if(currentColMaxWidth < cellSize)
             {
                 currentColMaxWidth = cellSize;
@@ -254,7 +253,6 @@ void Table::printAll() const
         colWidths.push_back(currentColMaxWidth);
         currentColMaxWidth = 0;
     }
-
 //todo izkarai v drug metod
     for(auto row : rows)
     {

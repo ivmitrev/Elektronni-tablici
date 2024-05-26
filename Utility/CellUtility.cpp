@@ -139,7 +139,14 @@ Cell* CellUtility::createCellFromInput(const std::string& value)
     {
         return new FormulaCell(value);
     }
-    else return new StringCell(" ");
+    else if(value == "")
+    {
+        return new StringCell(" ");
+    }
+    else
+    {
+        return nullptr;
+    }
 
 }
     

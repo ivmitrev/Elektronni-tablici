@@ -9,7 +9,6 @@
 class CommandUtility 
 {
 public:
-    static Table* ParseCommand(const std::string& comm, Table* table);
-    static bool ValidateCommand(const std::string& comm, const std::string& arg);
-    static void ExecuteCommand(const std::string& comm, const std::string& arg);
+    static std::string ParseCommand(const std::string& comm);
+    static Table* ExecuteCommand(const std::string& comm, Table* table);
 };
