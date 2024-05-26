@@ -106,7 +106,17 @@ bool CellUtility::isFormula(const std::string& cellValue)
     }
     return true;
 }
-
+bool CellUtility::checkForValidCell(const std::string& cellValue)
+{
+    if(CellUtility::isDouble(cellValue) || CellUtility::isInt(cellValue) || CellUtility::isFormula(cellValue) || CellUtility::isString(cellValue))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 Cell* CellUtility::createCellFromInput(const std::string& value)
 {
     if(CellUtility::isInt(value))
@@ -139,12 +149,12 @@ Cell* CellUtility::createCellFromInput(const std::string& value)
     {
         return new FormulaCell(value);
     }
-    else if(value == "")
+    else if(value == " " || value == "")
     {
         return new StringCell(" ");
     }
     else
-    {
+    { 
         return nullptr;
     }
 

@@ -9,5 +9,6 @@ public:
     static bool isString(const std::string& cellValue);
     static bool isFormula(const std::string& cellValue);
     static Cell* createCellFromInput(const std::string& value);
+    static bool checkForValidCell(const std::string& cellValue);
 private:  
 };

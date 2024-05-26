@@ -51,7 +51,7 @@ std::string CommandUtility::ParseCommand(const std::string& comm)
         {
             return "print";
         }
-        else if(command == "edit" && commArgs.size() == 4)
+        else if(command == "edit")
         {
             return "edit";
         }
@@ -89,12 +89,13 @@ Table* CommandUtility::ExecuteCommand(const std::string& comm, Table* table)
             std::vector<std::string> splitLine = FileUtility::splitBy(line, ", ");        
             for(const std::string& cell : splitLine)
             {
-               
                 std::string trimmedCell = FileUtility::trim(cell); 
                 Cell* newCell = CellUtility::createCellFromInput(trimmedCell);
+                int indexComa;
+                // proverka za validnotst na kletkite i validnost na zapetai
                 if(newCell == nullptr)
-                {
-                    std::cout << "Error: row " << rowIndex << ", col " << colIndex << ", " << trimmedCell << " is unknown data type." << std::endl;
+                {   
+                    std::cout << "Error: row " << rowIndex << ", col " << colIndex << ", " << trimmedCell << " is unknown data type or , is missing" << std::endl;
                     filePath = "";
                     return nullptr;
                 }
@@ -206,24 +207,40 @@ exit			exists the program
     {
         if(!filePath.empty())
         {
+            std::string newCellValue = commArgs[3];
+            if(commArgs[3] == "=")
+            {
+                for(int i=4;i<commArgs.size();i++)
+                {
+                    newCellValue+=" ";
+                    newCellValue+=commArgs[i];
+                }
+            }
+
             if(table == nullptr)
             {
                 std::cout << "Invalid table pointer" << std::endl;
                 return nullptr;
             }    
         
-            try
-            {
-                table->edit(std::stoi(commArgs[1]),std::stoi(commArgs[2]),commArgs[3]);
+            
+            if(CellUtility::checkForValidCell(newCellValue))
+            {   
+                if(CellUtility::isInt(commArgs[1]) && CellUtility::isInt(commArgs[2]))
+                {
+                    table->edit(std::stoi(commArgs[1]),std::stoi(commArgs[2]),newCellValue);
+                }
+                else
+                {
+                    std::cout << "Row or column should be whole numbers" << std::endl;
+                }
             }
-            catch(const std::invalid_argument& e)
+            else
             {
-                std::cout << "Invalid argument in row or column" << std::endl;
+                std::cout << "Invalid cell argument " << newCellValue << std::endl;
             }
-            catch(const std::out_of_range& e)
-            {
-                std::cout << "Invalid argument in row or column" << std::endl;
-            }
+
+            
         }
         else
         {

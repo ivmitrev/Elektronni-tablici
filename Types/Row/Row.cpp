@@ -71,14 +71,6 @@ void Row::editCell(size_t colIndex, const std::string& value)
         return;
     }
     auto newCell = CellUtility::createCellFromInput(value);
-    // da se opravi
-    if(newCell->getValueCellString() == " ") 
-    {
-        std::cerr<<"Invalid value\n";
-        delete newCell;
-        return;
-    }
-
     delete cells[colIndex];
     cells[colIndex] = newCell;
 }
