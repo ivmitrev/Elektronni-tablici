@@ -4,6 +4,7 @@
 FormulaCell::FormulaCell(const std::string& cellV)
 {
     this->cellValue = cellV;
+    this->cellValueAnswer = "";
 }
 void FormulaCell::print() const
 {        
@@ -34,16 +35,18 @@ std::string FormulaCell::getValueCellString() const
 }
 std::string FormulaCell::getValueCellAnswerString() const
 {
-    // std::cout << "tuk :"<< this->cellValueAnswer << std::endl; 
     return this->cellValueAnswer;
 }
 void FormulaCell::setValueCellAnswerString(std::string value) 
 {
-    this->cellValueAnswer = value;
-    if(value != "ERROR")
+    if(this->cellValueAnswer == "")
     {
-        double number = std::stod(this->cellValueAnswer);
-        this->cellValueAnswer = doubleToString(number,3);
+        this->cellValueAnswer = value;
+        if(value != "ERROR")
+        {
+            double number = std::stod(this->cellValueAnswer);
+            this->cellValueAnswer = doubleToString(number,3);
+        }
     }
 }
 void FormulaCell::print(int cellWidth) const
@@ -61,4 +64,4 @@ void FormulaCell::print(int cellWidth) const
             std::cout<<' ';
         }
     }
-}     
+}   

@@ -1,6 +1,5 @@
 #include "Table.h"
-#include "../../Utility/CellUtility.h"
-#include "../Cell/FormulaCell.h"
+
 Table::~Table()
 {
     for(Row* row : rows)
@@ -8,6 +7,36 @@ Table::~Table()
         delete row;
     }
 }
+
+Table::Table(const Table& other)
+{
+    rows.reserve(other.rows.size());
+    for(const Row* row : other.rows)
+    {
+        rows.push_back(new Row (*row));
+    }
+}
+
+Table& Table::operator=(const Table& other)
+{
+    if(this != &other)
+    {
+        for(Row* row : rows)
+        {
+            delete row;
+        }
+        rows.clear();
+
+        rows.reserve(other.rows.size());
+        for(const Row* row : other.rows)
+        {
+            rows.push_back(new Row (*row));
+        }
+    }
+
+    return *this;   
+}
+
 void Table::addRow(Row* row)
 {
     rows.push_back(row);
@@ -222,18 +251,6 @@ void Table::calculatingFormulas() const
     this->calculatingFormulasNotRc();
     this->calculatingFormulasOnlyRc();
 }
-int Table::getMaxRowWidth() const
-{
-    int maxSize = -1;
-    for(auto i : rows)
-    {
-        if(i->getSize() > maxSize)
-        {
-            maxSize = i->getSize();
-        }
-    }
-    return maxSize;
-}
 
 void Table::printAll() const
 {
@@ -273,11 +290,12 @@ void Table::edit(const int& rowIndex,const int& colIndex, const std::string& new
     
     if (correctedRowIndex >= rows.size() || correctedRowIndex < 0) 
     {
-        std::cerr << "Error: Index out of range\n";
-        return;
+        std::cerr << "Error: Index out of range" << std::endl;;
     }
-    rows[correctedRowIndex]->editCell(correctedColIndex, newCellValue);
-    std::cout<<"Edited" << std::endl;
+    else
+    {
+        rows[correctedRowIndex]->editCell(correctedColIndex, newCellValue);
+    }
 }
 
 bool Table::isValidNumber(const std::string& str) const

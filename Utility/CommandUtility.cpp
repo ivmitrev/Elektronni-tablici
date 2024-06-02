@@ -1,16 +1,7 @@
 #include "CommandUtility.h"
-#include "../Types/Cell/Cell.h"
-#include "../Types/Row/Row.h"
-#include "../Types/Cell/IntCell.h"
-#include "../Types/Cell/DoubleCell.h"
-#include "../Types/Cell/StringCell.h"
-#include "../Types/Table/Table.h"
-#include "CellUtility.h"
-#include "FileUtility.h"
-// #include <typeinfo>
 
 std::string filePath = "";
-
+bool isOpen = false;
 std::string CommandUtility::ParseCommand(const std::string& comm)
 {   
     std::vector<std::string> commArgs = FileUtility::splitBy(comm, " ");
@@ -51,7 +42,7 @@ std::string CommandUtility::ParseCommand(const std::string& comm)
         {
             return "print";
         }
-        else if(command == "edit")
+        else if(command == "edit" && commArgs.size() >= 4)
         {
             return "edit";
         }
@@ -69,49 +60,55 @@ Table* CommandUtility::ExecuteCommand(const std::string& comm, Table* table)
     std::vector<std::string> commArgs = FileUtility::splitBy(comm," ");
     if(parsedCommand == "open")
     {   
-           
-        table = new Table();
-        filePath = commArgs[1];
-        std::vector<std::string> lines = FileUtility::readFromFile(filePath);
-        int maxRowWidth = 0;
-        for(const auto& line : lines)
+        if(filePath != "")
         {
-            std::vector<std::string> splitLine = FileUtility::splitBy(line, ", ");
-            if(maxRowWidth < splitLine.size())
+            std::cout << "If you want to open another file you should close the opened one" << std::endl;
+        } 
+        else
+        {  
+            table = new Table();
+            filePath = commArgs[1];
+            std::vector<std::string> lines = FileUtility::readFromFile(filePath);
+            int maxRowWidth = 0;
+            for(const auto& line : lines)
             {
-                maxRowWidth = splitLine.size();
-            }
-        }
-        int rowIndex = 1, colIndex = 1;
-        for(const auto& line : lines)
-        {
-            Row* row = new Row();
-            std::vector<std::string> splitLine = FileUtility::splitBy(line, ", ");        
-            for(const std::string& cell : splitLine)
-            {
-                std::string trimmedCell = FileUtility::trim(cell); 
-                Cell* newCell = CellUtility::createCellFromInput(trimmedCell);
-                int indexComa;
-                // proverka za validnotst na kletkite i validnost na zapetai
-                if(newCell == nullptr)
-                {   
-                    std::cout << "Error: row " << rowIndex << ", col " << colIndex << ", " << trimmedCell << " is unknown data type or , is missing" << std::endl;
-                    filePath = "";
-                    return nullptr;
+                std::vector<std::string> splitLine = FileUtility::splitBy(line, ", ");
+                if(maxRowWidth < splitLine.size())
+                {
+                    maxRowWidth = splitLine.size();
                 }
-                row->addCell(newCell);
-                colIndex++;
             }
-            for (int i = 0; i < maxRowWidth-splitLine.size(); i++)
+            int rowIndex = 1, colIndex = 1;
+            for(const auto& line : lines)
             {
-                row->addCell(CellUtility::createCellFromInput(" "));
-            }
-                
-            table->addRow(row);
-            colIndex=1;
-            rowIndex++;
-        }  
-        return table;
+                Row* row = new Row();
+                std::vector<std::string> splitLine = FileUtility::splitBy(line, ", ");        
+                for(const std::string& cell : splitLine)
+                {
+                    std::string trimmedCell = FileUtility::trim(cell); 
+                    Cell* newCell = CellUtility::createCellFromInput(trimmedCell);
+                    int indexComa;
+                    // proverka za validnotst na kletkite i validnost na zapetai
+                    if(newCell == nullptr)
+                    {   
+                        std::cout << "Error: row " << rowIndex << ", col " << colIndex << ", " << trimmedCell << " is unknown data type or , is missing" << std::endl;
+                        filePath = "";
+                        return nullptr;
+                    }
+                    row->addCell(newCell);
+                    colIndex++;
+                }
+                for (int i = 0; i < maxRowWidth-splitLine.size(); i++)
+                {
+                    row->addCell(CellUtility::createCellFromInput(" "));
+                }
+                    
+                table->addRow(row);
+                colIndex=1;
+                rowIndex++;
+            }  
+            return table;
+        }
     }
     else if(parsedCommand == "close")
     {
@@ -208,7 +205,7 @@ exit			exists the program
         if(!filePath.empty())
         {
             std::string newCellValue = commArgs[3];
-            if(commArgs[3] == "=")
+            if(commArgs[3] == "=" || commArgs[3].front() == '\"')
             {
                 for(int i=4;i<commArgs.size();i++)
                 {
@@ -216,7 +213,7 @@ exit			exists the program
                     newCellValue+=commArgs[i];
                 }
             }
-
+          
             if(table == nullptr)
             {
                 std::cout << "Invalid table pointer" << std::endl;

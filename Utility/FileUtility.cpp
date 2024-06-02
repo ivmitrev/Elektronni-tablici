@@ -66,7 +66,6 @@ std::vector<std::string> FileUtility::readFromFile(const std::string& filePath)
         else
         {
             std::cout << "Failed to open the file" << std::endl;
-            // greshka hvurli
         }
 
     }
@@ -89,7 +88,7 @@ bool FileUtility::saveFile(const Table* table,const std::string& filePath)
     std::ofstream outputFile(filePath, std::ios::trunc);
     if(!outputFile.is_open())
     {
-        std::cerr << "Failed to open the file" << std::endl;
+        std::cout << "Failed to open the file" << std::endl;
         return false;
     }
 
@@ -117,7 +116,7 @@ bool FileUtility::saveAsFile(const Table* table, const std::string& newFilePath)
     std::ifstream file(newFilePath);
     if(file.good())
     {
-        std::cerr << newFilePath << " already exists" << std::endl;
+        std::cout << newFilePath << " already exists" << std::endl;
         return false; 
     }
     file.close();

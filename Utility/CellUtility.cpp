@@ -1,8 +1,5 @@
 #include "CellUtility.h"
-#include "../Types/Cell/IntCell.h"
-#include "../Types/Cell/DoubleCell.h"
-#include "../Types/Cell/StringCell.h"
-#include "../Types/Cell/FormulaCell.h"
+
 
 bool CellUtility::isInt(const std::string& cellValue)
 {     

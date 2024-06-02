@@ -1,5 +1,4 @@
 #include "Row.h" 
-#include "../../Utility/CellUtility.h"
 
 Row::~Row() 
 {
@@ -7,6 +6,35 @@ Row::~Row()
     {
         delete cell;
     }
+}
+
+Row::Row(const Row& other)
+{
+    cells.reserve(other.cells.size());
+    for(const auto& cell : other.cells)
+    {
+        cells.push_back(CellUtility::createCellFromInput(cell->getValueCellString()));
+    }
+}
+
+Row& Row::operator=(const Row& other)
+{
+    if(this != &other)
+    {
+        for(Cell* cell : cells)
+        {
+            delete cell;
+        }
+        cells.clear();
+
+        cells.reserve(other.cells.size());
+        for(const auto& cell : other.cells)
+        {
+            cells.push_back(CellUtility::createCellFromInput(cell->getValueCellString()));
+        }
+    }
+
+    return *this;
 }
 
 void Row::addCell(Cell* cell)
@@ -18,22 +46,22 @@ void Row::print(int index) const
 {
     if(index < 0 || index >= cells.size())
     {
-        // greshka hvurlqm
-        return;
+        std::cout << "Index out of range." << std::endl;
     }
-    cells[index]->print();
+    else
+    {
+        cells[index]->print();
+    }
 }
 
 
 void Row::printAll() const
 {
-    //std::cout << "Print all " << cells.size() << " cells\n";
     for(auto cell : cells)
     {
         cell->print();
-        // std::cout << " | " ;
+       
     } 
-
 }
 
 int Row::getSize() const
@@ -46,31 +74,17 @@ std::vector<Cell*> Row::getCells() const
     return this->cells;
 }
 
-
-// Row::Row(const std::vector<Cell*> rowofcells)
-// {
-//     this->rowofcells = rowofcells;
-// }
-// Row::Row(const Row& other)
-// {
-// //    for(auto* cell : other.rowofcells)
-// //    {
-// //     rowofcells.push_back(new Ce)
-// //    }
-// }
-// Row& Row::operator=(const Row& other)
-// {
-
-// }
-
 void Row::editCell(size_t colIndex, const std::string& value) 
 {
     if (colIndex >= this->getCells().size() || colIndex < 0) 
     {
-        std::cerr << "Error: Index out of range\n";
-        return;
+        std::cout << "Error: Index out of range" << std::endl;
     }
-    auto newCell = CellUtility::createCellFromInput(value);
-    delete cells[colIndex];
-    cells[colIndex] = newCell;
+    else
+    {
+        auto newCell = CellUtility::createCellFromInput(value);
+        delete cells[colIndex];
+        cells[colIndex] = newCell;
+        std::cout<<"Edited" << std::endl;
+    }
 }

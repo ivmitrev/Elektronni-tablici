@@ -74,3 +74,4 @@ std::string DoubleCell::getValueCellString() const
     }
     return doubleToString(this->cellValue, 3);
 }
+
