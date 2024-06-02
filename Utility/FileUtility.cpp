@@ -38,15 +38,9 @@ std::string FileUtility::trim(const std::string& str)
     {
         return str;
     }
-    auto start = std::find_if_not(str.begin(), str.end(), [](unsigned char ch) 
-    {
-        return std::isspace(ch);
-    });
-    auto end = std::find_if_not(str.rbegin(), str.rend(), [](unsigned char ch) 
-    {
-        return std::isspace(ch);
-    }).base();
-    return (start < end) ? std::string(start, end) : std::string();
+    auto start = str.find_first_not_of(" \t");
+    auto end = str.find_last_not_of(" \t");
+    return (start == std::string::npos) ? "" : str.substr(start, end - start + 1);
 }
 
 std::vector<std::string> FileUtility::readFromFile(const std::string& filePath)

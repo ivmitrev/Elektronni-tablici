@@ -270,7 +270,7 @@ void Table::printAll() const
         colWidths.push_back(currentColMaxWidth);
         currentColMaxWidth = 0;
     }
-//todo izkarai v drug metod
+    
     for(auto row : rows)
     {
         for(int i=0;i<row->getCells().size();i++)

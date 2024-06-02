@@ -60,7 +60,6 @@ void Row::printAll() const
     for(auto cell : cells)
     {
         cell->print();
-       
     } 
 }
 
